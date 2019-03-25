@@ -1,3 +1,0 @@
-function [xdemod] = de_bpsk(x,t,fc)
-    xdem
-end
