@@ -4,22 +4,25 @@ clc;
 
 %couch fig 5-31 b (p369)
 
+
 % generate data
 Ap = 1;
 data_values = Ap*[0 1];
 num_bits = 4*1e3;
 k=5; 
 spb=256;
-R = 1e3;
+
+r = 0.6;
+B = 5e3;
+R = B*2/(1+r);
 Tb = 1/R;
-r = 0.4;
-fc = 1e5;
+fc = 1e4;
 [~,pulse] = rt_rcro(k,Tb,spb,r);
 Ac = 1;
 levels = [-Ac/sqrt(2) -Ac/(3*sqrt(2)) Ac/(3*sqrt(2)) Ac/sqrt(2)]; 
 thresholds = [(levels(1)+levels(2))/2,(levels(2)+levels(3))/2,(levels(3)+levels(4))/2];
 
-nv = 1.0;
+nv = 0;
 for nv = 0:0.1:10
     
     %generate data
