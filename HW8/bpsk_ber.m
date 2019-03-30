@@ -17,7 +17,7 @@ xlabel('E_b/N_o');
 ylabel('P_e');
 
 fc = 1e5;
-Ac = 1;
+Ac = 2;
 R = 28.8e3;
 Tb = 1/R;
 spb = 16;

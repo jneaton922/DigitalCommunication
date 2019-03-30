@@ -1,0 +1,3 @@
+function [bits] = adc_2_bit(qam_value,thresholds,bit_values)
+    if qam_value
+end

@@ -10,7 +10,7 @@ fc = 1e5;
 Ac = 1;
 Ap = 1;
 values = Ap*[-1 1];
-num_signals = 1000;
+num_signals = 5000;
 plot_delay=1e-3;
 skip_plots = 50;
 update_plot = true;
@@ -26,7 +26,7 @@ bin_res = fs/N;
 freq = -fs/2:fs/N:fs/2 - fs/N;
 
 A = values(1);
-Ff = fftshift(fft(pulse(2:end),N));
+Ff = fftshift(fft(pulse,N));
 theor_psd = Ac^2 * Tb/4 * (abs(Ff)/spb).^2;
 theor_psd = circshift(theor_psd,floor(fc/bin_res)) + circshift(theor_psd,ceil(-fc/bin_res));
 Psd=zeros(1,N);
