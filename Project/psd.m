@@ -18,7 +18,7 @@ fc = 1e4;
 Ac = 1;
 levels = [-Ac/sqrt(2) -Ac/(3*sqrt(2)) Ac/(3*sqrt(2)) Ac/sqrt(2)]; 
 
-num_signals =1e3;
+num_signals =1e2;
 N = (2*k + num_bits/4)*sps;
 psd_s = zeros(1,N);
 avg_Sf = zeros(1,N);
@@ -57,4 +57,8 @@ for i=1:num_signals
     plot([1.8e4 1.8e4],[-300 -100],'r--');
     pause(1e-3);
 end
+
+psd_s = psd_s./num_signals;
+offset = (fs/2+B)/(fs/N)
+power_in_band = sum(psd_s(offset:offset+((2*B)/fs/N)))*(fs/N)
 
