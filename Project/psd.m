@@ -2,6 +2,7 @@ clear;
 close all;
 clc;
 
+% psd should be ~ 5Ac^2 / 9 * Ts * H_e
 % generate data
 Ap = 1;
 data_values = Ap*[0 1];
@@ -15,10 +16,10 @@ R = B*2/(1+r);
 Ts = 1/R;
 fc = 1e4;
 [~,pulse] = rt_rcro(k,Ts,sps,r);
-Ac = 1;
+Ac = (5/(9*Ts));
 levels = [-Ac/sqrt(2) -Ac/(3*sqrt(2)) Ac/(3*sqrt(2)) Ac/sqrt(2)]; 
 
-num_signals =1e2;
+num_signals =1e3;
 N = (2*k + num_bits/4)*sps;
 psd_s = zeros(1,N);
 avg_Sf = zeros(1,N);
@@ -50,15 +51,15 @@ for i=1:num_signals
 
     subplot(2,1,2);cla;
     plot(freq,20*log10(abs(psd_s)./i));xlim([0.1e4 1.9e4]);
-    plot([.5e4 .5e4],[-300 -100],'g--');
-    plot([1.5e4 1.5e4],[-300 -100],'g--');
+    plot([.5e4 .5e4],[-200 100],'g--');
+    plot([1.5e4 1.5e4],[-200 100],'g--');
     hold on;
-    plot([.2e4 .2e4],[-300 -100],'r--');
-    plot([1.8e4 1.8e4],[-300 -100],'r--');
+    plot([.2e4 .2e4],[-200 100],'r--');
+    plot([1.8e4 1.8e4],[-200 100],'r--');
     pause(1e-3);
 end
 
 psd_s = psd_s./num_signals;
-offset = (fs/2+B)/(fs/N)
+offset = (fs/2+B)/(fs/N);
 power_in_band = sum(psd_s(offset:offset+((2*B)/fs/N)))*(fs/N)
 

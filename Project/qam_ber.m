@@ -35,10 +35,12 @@ Ac = 1;
 levels = [-Ac/sqrt(2) -Ac/(3*sqrt(2)) Ac/(3*sqrt(2)) Ac/sqrt(2)]; 
 thresholds = [(levels(1)+levels(2))/2,(levels(2)+levels(3))/2,(levels(3)+levels(4))/2];
 
-Eb = sum((((levels(1)+levels(2))/2)*pulse.*cos(2*pi*fc*pt)).^2);
+Eb = sum((((levels(1)+levels(2)))*pulse.*cos(2*pi*fc*pt)).^2)/4;
+c_Eb = sum((((levels(1)+levels(2)))*pulse.*cos(2*pi*fc*pt)).^2)/4;
 ber = zeros(1,max_nv/dv);
 c_ber = zeros(1,max_nv/dv);
 Eb_No = zeros(1,max_nv/dv);
+c_Eb_No = zeros(1,max_nv/dv);
 
 for i=1:num_trials
     noise_variance = dv;
@@ -73,10 +75,17 @@ for i=1:num_trials
         this_c_ber = sum(data~=coded_recovered_bits)/num_bits;
         ber(ind) = ber(ind)+this_ber;
         c_ber(ind) = c_ber(ind)+this_c_ber;
-        P_n = sum(nt.^2)/(length(nt)*Tb);
+        
+        P_n = sum(nt(1:length(t)).^2)/(length(t)*Tb);
         B = R/2;
         No = P_n/B;
+        
+        c_P_n = sum(nt.^2)/(length(nt)*Tb);
+        B = R/2;
+        c_No = P_n/B;
+        
         Eb_No(ind) = Eb_No(ind) + Eb/No;
+        c_Eb_No(ind) = c_Eb_No(ind) + c_Eb/c_No;
         noise_variance = noise_variance + dv;
         ind = ind+1;
     end
@@ -85,8 +94,9 @@ for i=1:num_trials
         semilogy(eb_no,low_pe_lim,'g--'); hold on;
         semilogy(eb_no,high_pe_lim,'r--');
         x = 20*log10(Eb_No/i);
+        cx = 20*log10(c_Eb_No/i);
         hold on;
-        plot(x,ber/i,x,c_ber/i);
+        plot(x,ber/i,cx,c_ber/i);
         legend({'Lower Bound','Upper Bound','Without Coding','With Hamming(7,4)'});
         title(strcat('P_e and E_b/N_0 -- Trial: ',num2str(i)));
         xlabel('E_b/N_o');
