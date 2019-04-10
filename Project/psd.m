@@ -10,13 +10,15 @@ num_bits = 4*1e3;
 k=5; 
 sps=64;
 
-r = 0.6;
+r = 0.4;
 B = 5e3;
 R = B*2/(1+r);
 Ts = 1/R;
 fc = 1e4;
 [~,pulse] = rt_rcro(k,Ts,sps,r);
-Ac = (5/(9*Ts));
+
+Ac = 5;
+
 levels = [-Ac/sqrt(2) -Ac/(3*sqrt(2)) Ac/(3*sqrt(2)) Ac/sqrt(2)]; 
 
 num_signals =1e3;
@@ -51,15 +53,24 @@ for i=1:num_signals
 
     subplot(2,1,2);cla;
     plot(freq,20*log10(abs(psd_s)./i));xlim([0.1e4 1.9e4]);
-    plot([.5e4 .5e4],[-200 100],'g--');
-    plot([1.5e4 1.5e4],[-200 100],'g--');
+    plot([.5e4 .5e4],[max(20*log10(abs(psd_s)./i))-20 100],'g--');
+    plot([1.5e4 1.5e4],[max(20*log10(abs(psd_s)./i))-20 100],'g--');
+    
+    plot([0.2e4 0.5e4],[max(20*log10(abs(psd_s)./i))-20,max(20*log10(abs(psd_s)./i))-20],'g--');
+    plot([1.5e4 1.8e4],[max(20*log10(abs(psd_s)./i))-20,max(20*log10(abs(psd_s)./i))-20],'g--');
+    
     hold on;
-    plot([.2e4 .2e4],[-200 100],'r--');
-    plot([1.8e4 1.8e4],[-200 100],'r--');
+    plot([.2e4 .2e4],[max(20*log10(abs(psd_s)./i))-55 100],'r--');
+    plot([1.8e4 1.8e4],[max(20*log10(abs(psd_s)./i))-55 100],'r--');
+    
+    plot([0.1e4 0.2e4],[max(20*log10(abs(psd_s)./i))-55,max(20*log10(abs(psd_s)./i))-55],'r--');
+    plot([1.8e4 1.9e4],[max(20*log10(abs(psd_s)./i))-55,max(20*log10(abs(psd_s)./i))-55],'r--');
+    
     pause(1e-3);
 end
 
 psd_s = psd_s./num_signals;
 offset = (fs/2+B)/(fs/N);
-power_in_band = sum(psd_s(offset:offset+((2*B)/fs/N)))*(fs/N)
+band_bins = round(B/(fs/N));
+power_in_band = sum(psd_s(offset:offset+band_bins))*(fs/N)
 
