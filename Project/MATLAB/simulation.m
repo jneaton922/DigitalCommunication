@@ -4,7 +4,6 @@ clc;
 
 %couch fig 5-31 b (p369)
 
-
 % generate data
 Ap = 1;
 data_values = Ap*[0 1];
@@ -12,7 +11,7 @@ num_bits = 4*1e3;
 k = 5; 
 spb = 256;
 
-r = 0.6;
+r = 0.1;
 B = 5e3;
 R = B*2/(1+r);
 Tb = 1/R;

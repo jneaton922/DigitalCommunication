@@ -10,7 +10,7 @@ num_bits = 4*1e3;
 k=5; 
 sps=256;
 
-r = 0.2;
+r = 0.1;
 B = 5e3;
 R = B*2/(1+r);
 Ts = 1/R;
@@ -70,6 +70,6 @@ end
 
 psd_s = psd_s./num_signals;
 offset = (fs/2+B)/(fs/N);
-band_bins = round(B/(fs/N));
+band_bins = roundd(B/(fs/N));
 power_in_band = sum(psd_s(offset:offset+band_bins))*(fs/N)
 
